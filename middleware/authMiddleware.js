@@ -10,7 +10,7 @@ export const authenticateUser = (req, res, next) => {
     try {
         const {userId, role}=verifyJWT(token);
         // for test drive user--explore the app without login
-        const testUser=userId === '66eb098a095b9dfbbf6c7aba'
+        const testUser=userId === '66edc1718d09d61f086141c7'
         req.user={userId, role, testUser};
         next();
     } catch (error) {
