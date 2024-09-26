@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
 import Wrapper from '../assets/wrappers/Dashboard';
-import { BigSidebar, SmallSidebar, Navbar } from '../components';
 import { checkDefaultTheme } from '../App'; 
-import { Outlet, redirect, useLoaderData, useNavigate } from 'react-router-dom';
+import { BigSidebar, SmallSidebar, Navbar, Loading } from '../components';
+import { createContext, useContext, useState } from 'react'
 import customFetch from '../utils/customFetch';
 import { toast } from 'react-toastify';
 
@@ -20,14 +20,18 @@ export const loader = async () => {
 // this is used to send value to all the child components written inside this const.Provider
 const DashboardContext = createContext();
 
-
 const DashboardLayout = ({queryClient}) => {
 
   // dashboard loader ka code
   // as i get the user we have to change the functionality of dashboard
   const { user } = useLoaderData();
-
   const navigate = useNavigate();
+
+  // for loader
+  const navigation =useNavigation();
+  const isPageLoading = navigation.state === 'loading';
+
+
 
   const [showSidebar,setShowSidebar]= useState(false)
   const [isDarkTheme,setIsDarkTheme]= useState(checkDefaultTheme())
@@ -61,7 +65,7 @@ const DashboardLayout = ({queryClient}) => {
           <div>
             <Navbar/>
             <div className='dashboard-page'>
-              <Outlet context={{user}} />
+              {isPageLoading ? (< Loading/>) :(<Outlet context={{user}} />)}
             </div>
           </div>
         </main>
